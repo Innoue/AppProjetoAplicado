@@ -1,14 +1,20 @@
-import { StyleSheet,View,Text } from "react-native";
+import { StyleSheet,View,Text,TouchableOpacity } from "react-native";
 
+import { useNavigation } from '@react-navigation/native'
 
 export const CardRecipe=({title, doTime,country,type})=>{
+  const navigation = useNavigation();
+
+  function navigate(){
+    navigation.navigate('Recipe')
+  }
   return(
-    <View style={styles.container}>
+    <TouchableOpacity onPress={navigate} style={styles.container}>
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.text}>{type}</Text>
       <Text style={styles.text}>{country}</Text>
       <Text style={styles.text}>{doTime}min</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 

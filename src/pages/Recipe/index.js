@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useLayoutEffect } from 'react'
 import { View, Text, Button, StyleSheet } from 'react-native'
 
+import { useNavigation } from '@react-navigation/native'
+
 export default function Recipe(){
+  const navigation = useNavigation();
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Pudim',
+      headerTitleAlign: 'center',
+      headerTitleStyle: { 
+        fontSize:24,
+        color: '#C16714',
+        fontWeight:'bold',
+      }
+    })
+  }, [navigation])
   return(
     <View style={styles.container}>
-      <View style={{alignItems:'center'}}>
-        <Text style={styles.title}>Pudim</Text>
+      <View style={{alignItems:'flex-start'}}>
         <Text style={styles.time}>Tempo de preparo: 50min</Text>
       </View>
       <View style={{alignItems:'flex-start',marginTop:10}}>
