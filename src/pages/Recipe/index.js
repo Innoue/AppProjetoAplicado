@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     backgroundColor:'orange',
     borderRadius:10,
     paddingHorizontal:7,
-    marginHorizontal:5
+    marginHorizontal:5,
   },
   tagText:{
     fontSize:15,
