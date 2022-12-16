@@ -1,10 +1,14 @@
 import React, { useLayoutEffect } from 'react'
-import { View, Text, Button, StyleSheet,ScrollView } from 'react-native'
+import { View, Text, Button, StyleSheet,ScrollView,TouchableOpacity } from 'react-native'
 
 import { useNavigation } from '@react-navigation/native'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function Recipe(){
   const navigation = useNavigation();
+  function navigate(){
+    navigation.navigate('RecipeEdit')
+  }
   useLayoutEffect(() => {
     navigation.setOptions({
       title: 'Pudim',
@@ -13,7 +17,15 @@ export default function Recipe(){
         fontSize:24,
         color: '#C16714',
         fontWeight:'bold',
-      }
+      },
+      headerRight: () => (
+        <TouchableOpacity 
+          style={{flex:1,alignItems:'center',justifyContent:'center', paddingHorizontal:25}}
+          onPress={navigate}
+        >
+          <Icon name='edit' size={24}/>
+        </TouchableOpacity>
+      ),
     })
   }, [navigation])
   return(
@@ -31,11 +43,10 @@ export default function Recipe(){
         <View style={{alignItems:'flex-start',marginTop:10}}>
           <Text style={{...styles.title,alignText:'left'}}>Modo de preparo</Text>
           <Text>
-            almdajchjshbsadnasodnaosidnias
-            almdajchjshbsadnasodnaosidnias
-            almdajchjshbsadnasodnaosidnias
-            almdajchjshbsadnasodnaosidnias
-            asojndaousdnaosidnaaaaaaaaaaaaaaaaaaaaaoa
+            teste
+            teste
+            teste
+            teste
           </Text>
         </View>
         <View style={{flexDirection:'row', alignItems:'center',marginTop:10}}>
@@ -72,16 +83,13 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight:'bold',
     color:'#C16714',
-    // fontFamily:'Inter'
   },
   time:{
     fontSize:12,
     fontStyle:'italic',
-    // fontFamily:'inter'
   },
   textRecipe:{
     fontSize:15,
-    // fontFamily:'inter',
 
   },
   tag:{
