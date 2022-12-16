@@ -6,6 +6,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from './src/pages/Home';
 import Recipe from './src/pages/Recipe';
+import RecipeEdit from './src/pages/RecipeEdit'
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -15,10 +16,16 @@ export default function App() {
         <Stack.Screen 
           name="Home"
           component={Home} 
+          options={{title: 'Receitas'}}
         />
         <Stack.Screen 
           name="Recipe"
           component={Recipe}
+          options={{title: ''}}
+        />
+        <Stack.Screen 
+          name="RecipeEdit"
+          component={RecipeEdit}
           options={{title: ''}}
         />
       </Stack.Navigator>

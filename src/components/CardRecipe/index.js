@@ -6,7 +6,7 @@ export const CardRecipe=({title, doTime,country,type})=>{
   const navigation = useNavigation();
 
   function navigate(){
-    navigation.navigate('Recipe')
+    navigation.navigate('RecipeEdit')
   }
   return(
     <TouchableOpacity onPress={navigate} style={styles.container}>
