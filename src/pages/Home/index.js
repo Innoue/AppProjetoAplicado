@@ -1,26 +1,44 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { FlatList, ScrollView } from 'react-native-gesture-handler';
 import { CardRecipe } from '../../components/CardRecipe';
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation,useFocusEffect } from '@react-navigation/native'
 import { FAB } from 'react-native-paper';
+import api from '../../services/api';
 
 export default function Home(){
+  const [data, setData] = useState({})
   const navigation = useNavigation();
   function navigate(){
     navigation.navigate('RecipeEdit')
   }
 
+  useFocusEffect(()=>{
+    search()
+  },)
+
+  async function search(){
+    try {
+      const response = await api.get('/recipe')
+      setData(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const renderItem = ({ item }) => (
     <View style={styles.containerCard}>
-      <CardRecipe title={item.title} type={item.type} country={item.country} doTime={item.doTime}/>
+      <CardRecipe 
+        id={item.id}
+        item={item}
+      />
     </View>
   )
   return(
     <View style={styles.container}>
       <ScrollView style={styles.scroll}>
         <FlatList
-          data={DATA}
+          data={data}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
