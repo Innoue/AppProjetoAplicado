@@ -39,6 +39,7 @@ export default function RecipeEdit(){
     setCountry(itemCountry||'Brasil')
     setdoTime(itemdoTime||0)
     setTags(itemTags)
+    console.log(tags)
   },[route])
 
   useEffect(()=>{
@@ -52,11 +53,10 @@ export default function RecipeEdit(){
   },[])
 
   function addItem(data=[]){
-    
     api.post('/tags',{name : data[data.length-1].name})
     .then((response)=>{
       setTagList(data)
-      console.log(tags)
+      console.log(data)
     })
     .catch((error)=>{
       console.log(error)
@@ -72,7 +72,7 @@ export default function RecipeEdit(){
         method:method,
         country:country,
         doTime:doTime,
-        tags:tags.map(({name})=>name)
+        tags:tags
       })
       .then(function (response) {
         navigation.dispatch(popAction)
@@ -208,7 +208,7 @@ export default function RecipeEdit(){
             <MultiSelect
               styleDropdownMenu={{borderWidth:1, paddingHorizontal:5, borderRadius:8, height:45}}
               items={tagList}
-              uniqueKey="id"
+              uniqueKey="name"
               onSelectedItemsChange={setTags}
               selectedItems={tags}
               selectText="Selecione as TAGs"
@@ -229,7 +229,8 @@ export default function RecipeEdit(){
             />
           </View>
         </View>
-        <View style={{marginTop:10, marginBottom:30, flexDirection:'row', justifyContent:'space-around'}}>
+      </ScrollView>
+      <View style={{marginTop:10, marginBottom:10, flexDirection:'row', justifyContent:'space-around'}}>
           <TouchableOpacity onPress={()=>navigation.dispatch(popAction)} style={styles.button}>
             <Text>Cancelar</Text>
           </TouchableOpacity>
@@ -237,7 +238,6 @@ export default function RecipeEdit(){
             <Text>Salvar</Text>
           </TouchableOpacity>
         </View>
-      </ScrollView>
     </View>
   )
 }

@@ -16,7 +16,6 @@ export default function App() {
         <Stack.Screen 
           name="Home"
           component={Home} 
-          options={{title: 'Receitas'}}
         />
         <Stack.Screen 
           name="Recipe"

@@ -1,21 +1,59 @@
-import React, { useEffect, useState } from 'react'
-import { View, StyleSheet } from 'react-native'
-import { FlatList, ScrollView } from 'react-native-gesture-handler';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react'
+import { View, StyleSheet, TouchableOpacity,Text,FlatList, ScrollView, TextInput } from 'react-native'
 import { CardRecipe } from '../../components/CardRecipe';
-import { useNavigation,useFocusEffect } from '@react-navigation/native'
+import { useNavigation, useIsFocused  } from '@react-navigation/native'
 import { FAB } from 'react-native-paper';
+import Icon from 'react-native-vector-icons/FontAwesome';
 import api from '../../services/api';
 
 export default function Home(){
-  const [data, setData] = useState({})
-  const navigation = useNavigation();
+  const [data, setData] = useState([])
+  const [recipeSearch,setRecipeSearch] = useState('')
+  const navigation = useNavigation()
+  const isFocused  = useIsFocused()
+
+  useEffect(()=>{
+    if(isFocused)
+      search()
+  },[isFocused])
+
+  const dataSearch = useMemo(()=>{
+    return data.filter((item)=>{
+      const hasTitle = new RegExp(recipeSearch,'i').test(item.title)
+      const hasType = new RegExp(recipeSearch,'i').test(item.type)
+      const hasCountry = new RegExp(recipeSearch,'i').test(item.country)
+      const hasTags = item.tags.some((e)=>new RegExp(recipeSearch,'i').test(e))
+
+      return hasTitle || hasType ||hasCountry || hasTags
+    })
+  },[data,recipeSearch])
+
+  useLayoutEffect(()=>{
+    navigation.setOptions({
+      headerTitleAlign: 'left',
+      headerTitle:()=>(
+      <TextInput 
+        placeholder='Pesquise aqui' 
+        value={recipeSearch}  
+        fontSize={18} 
+        style={styles.search}
+        onChangeText={(text)=>setRecipeSearch(text)}
+        />
+      ),
+      headerRight:()=>(
+        <TouchableOpacity
+          style={{flex:1,alignItems:'center',justifyContent:'center', paddingHorizontal:15}}
+        >
+          <Icon name='search' size={24}/>
+        </TouchableOpacity>
+      )
+    })
+  },[recipeSearch])
+  
   function navigate(){
     navigation.navigate('RecipeEdit')
   }
-
-  useFocusEffect(()=>{
-    search()
-  },)
+  
 
   async function search(){
     try {
@@ -38,7 +76,8 @@ export default function Home(){
     <View style={styles.container}>
       <ScrollView style={styles.scroll}>
         <FlatList
-          data={data}
+          nestedScrollEnabled 
+          data={dataSearch}
           renderItem={renderItem}
           keyExtractor={item => item.id}
         />
@@ -58,10 +97,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems:'center'
+    alignItems:'center',
+    paddingTop:10
   },
   containerCard:{
-    height:150,
     width:'100%',
     marginBottom:'5%'
   },
@@ -76,35 +115,10 @@ const styles = StyleSheet.create({
     bottom: 0,
     backgroundColor:'#1824B0'
   },
+  search:{
+    width:320,
+    borderBottomWidth:1,
+    paddingHorizontal:5,
+    marginLeft:15,
+  }
 })
-
-const DATA = [
-  {
-    id:1,
-    title:'Brusqueta',
-    type:'Lanche',
-    country:'Itália',
-    doTime:15
-  },
-  {
-    id:2,
-    title:'Carbonara',
-    type:'Refeição',
-    country:'Itália',
-    doTime:15
-  },
-  {
-    id:3,
-    title:'Sushi',
-    type:'Refeição',
-    country:'Japão',
-    doTime:120
-  },
-  {
-    id:4,
-    title:'Pudim',
-    type:'Sobremesa',
-    country:'Brasil',
-    doTime:50
-  },
-]

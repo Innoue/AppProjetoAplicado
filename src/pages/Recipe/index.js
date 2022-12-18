@@ -27,6 +27,7 @@ export default function Recipe(){
   useLayoutEffect(() => {
     navigation.setOptions({
       title: route.params?.item.title,
+
       headerTitleAlign: 'center',
       headerTitleStyle: { 
         fontSize:24,
@@ -68,7 +69,6 @@ export default function Recipe(){
           <Text style={styles.title}>Tipo de refeição: </Text>
           <Text style={styles.title}>{route.params?.item.type}</Text>
         </View>
-
         <View style={{marginTop:10}}>
           <Text style={styles.title}>TAGs </Text>
           <View style={styles.containerTag}>
@@ -77,10 +77,11 @@ export default function Recipe(){
               renderItem={({item}) => (
                 <View style={styles.tag}>
                   <Text style={styles.tagText}>{
-                    tags.find(({id,name})=>id == item)?.name
+                    item
                   }</Text>
                 </View>
               )}
+              nestedScrollEnabled
               //Setting the number of column
               numColumns={3}
               contentContainerStyle={{flexGrow:1,alignItems:'center'}}
